@@ -1,0 +1,50 @@
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+
+	## 非递归实现，用stack，top为当前需要比较的node
+    def constructMaximumBinaryTree(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: TreeNode
+        """
+        stack = []
+        for num in nums:
+        	tmpNode = TreeNode(num)
+        	if not stack:
+        		stack.append(tmpNode)
+        	else:
+        		tarNode = stack.pop()
+        		if num < tarNode.val:
+        			stack.append(tarNode)
+        			stack.append(tmpNode)
+        		else:
+        			## empty stack to build left tree
+        			preNode = tarNode
+			        while True:
+			        	if not stack:
+			        		break
+			        	curNode = stack.pop()
+			        	if num < curNode.val:
+			        		stack.append(curNode)
+			        		break
+			        	else:
+				        	curNode.right = preNode
+				        	preNode = curNode
+        			tmpNode.left = preNode
+        			stack.append(tmpNode)
+        preNode = stack.pop()
+        while True:
+        	if not stack:
+        		break
+        	curNode = stack.pop()
+        	curNode.right = preNode
+        	preNode = curNode
+        rootNode = preNode
+        return rootNode
+
