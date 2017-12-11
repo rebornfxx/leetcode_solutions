@@ -1,0 +1,81 @@
+class Solution(object):
+    def myAtoi(self, str):
+        """
+        :type str: str
+        :rtype: int
+        """
+        ## 先看符号，决定策略，正数还是负数
+        ## 除去符号位，最左侧不能是0
+        ## -2147483648~2147483647
+        str = str.strip()
+        if not str:
+            return 0
+        final_res = 0
+        digit_dict = {}
+        digit_dict['0'] = 0
+        digit_dict['1'] = 1
+        digit_dict['2'] = 2
+        digit_dict['3'] = 3
+        digit_dict['4'] = 4
+        digit_dict['5'] = 5
+        digit_dict['6'] = 6
+        digit_dict['7'] = 7
+        digit_dict['8'] = 8
+        digit_dict['9'] = 9
+        max_int = 2147483647
+        # min_int = -2147483648       # 负数的最大值
+
+        end_index = 0
+        for char_str in str:
+            if char_str in digit_dict or char_str in ('+', '-'):
+                end_index += 1
+            else:
+                break
+        if end_index == 0:
+            str = str[0]
+        else:
+            str = str[:end_index]
+
+        num_len = len(str)
+        if num_len == 1 and str not in digit_dict:
+            return 0
+        flag = 1    ## 0表示负数，1表示正数
+        top_index = 0
+        
+        ## 判断最左侧的符号
+        if str[0] == '-':
+            flag = 0
+            top_index = 1
+            num_len -= 1
+        elif str[0] == '+':
+            top_index = 1
+            num_len -= 1
+
+        while str[top_index] == '0':
+            top_index += 1
+            num_len -= 1
+        if top_index >= len(str):
+            return 0
+        for char_str in str[top_index:]:
+            if char_str not in digit_dict:
+                return 0
+            num = digit_dict[char_str]
+            if final_res:
+                final_res += num*10**(num_len-1)
+            else:
+                final_res = num*10**(num_len-1)
+            if flag and final_res > max_int:
+                return 0
+            if not flag and final_res > max_int+1:
+                return 0
+            num_len -= 1
+        if not flag:
+            final_res = final_res* (-1)
+        return final_res
+
+
+
+if __name__ == '__main__':
+    sol = Solution()
+    str = '-1'
+    print sol.myAtoi(str)
