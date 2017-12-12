@@ -37,3 +37,10 @@ class Solution(object):
    				return False
    		return True
 
+
+if __name__ == "__main__":
+	sol = Solution()
+	beginWord = 'hit'
+	endWord = 'cog'
+	wordList = ["hot","dot","dog","lot","log","cog"]
+	sol.ladderLength()
