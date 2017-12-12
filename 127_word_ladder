@@ -1,0 +1,39 @@
+from queue import *
+
+class Solution(object):
+    def ladderLength(self, beginWord, endWord, wordList):
+        """
+        :type beginWord: str
+        :type endWord: str
+        :type wordList: List[str]
+        :rtype: int
+        """
+        ### 建一个dict，记录wordList的某个word,从beginWord演变过来的最小路径
+        short_way_dict = {}
+        search_queue = Queue()		## 这个轮次需要比较的word
+        search_queue.put(beginWord)
+        while search_queue.empty():
+        	search_word = search_queue.get()
+    		for word in wordList:
+    			if word in short_way_dict:
+    				continue
+    			if self.is_neighbor_word(word, search_word):
+    				short_way_dict[word] = short_way_dict.get(word, 0) + 1
+    				if word == endWord:
+    					return short_way_dict.get(word, 0) + 1
+    				search_queue.put(word)
+    	return 0
+
+   	def is_neighbor_word(self,word, tar_word):
+   		word_list = list(word)
+   		if len(word) != len(tar_word):
+   			return False
+   		tar_word_list = list(tar_word)
+   		diff_word_cnt = 0
+   		for i in range(len(word)):
+   			if word_list[i] != tar_word_list[i]:
+   				diff_word_cnt += 1
+   			if diff_word_cnt > 1:
+   				return False
+   		return True
+
