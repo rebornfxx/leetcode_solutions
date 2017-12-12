@@ -1,0 +1,15 @@
+class Solution(object):
+    def reverseWords(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        
+        s_sep = s.strip().split()
+        s_len = len(s_sep)
+        if s_len > 1:
+        	for i in range(s_len/2):
+        		tmp = s_sep[i]
+        		s_sep[i] = s_sep[s_len-1-i]
+        		s_sep[s_len-1-i] = tmp
+        return ' '.join(s_sep)
